@@ -11,7 +11,7 @@ RESOLUTION="$(printf 'HERE')"    # Your native resolution for the primary displa
 MIRROR()
 {
 # Asking for the resolution
-MIRROR=$(printf "4K UHD\n1080p\n720p\n480p\nNah I give up" | dmenu -b -l 5 -p "Choose the resolution.")
+MIRROR=$(printf "4K UHD\n1080p\n720p\n480p\nCustom Resolution\nNah I give up" | dmenu -b -l 5 -p "Choose the resolution.")
 
 if [ "$MIRROR" = "4K UHD" ]; then
 xrandr --output $PRIMARY --rate 60 --mode 3840×2160 --fb 3840×2160 --panning 3840×2160 --output $SECONDARY --rate 60 --mode 3840×2160 --same-as $PRIMARY
@@ -23,6 +23,9 @@ elif [ "$MIRROR" = "480p" ]; then
 xrandr --output $PRIMARY --rate 60 --mode 640x480 --fb 640x480 --panning 640x480 --output $SECONDARY --rate 60 --mode 640x480 --same-as $PRIMARY
 elif [ "$MIRROR" = "Exit" ]; then
 exit 0
+elif [ "$MIRROR" = "Custom Resolution" ]; then
+CRES=$(printf "Enter a resolution. Example: 1920x1080" | dmenu -g 1 -b -l 1 -p 'Enter a resolution.')
+xrandr --output $PRIMARY --rate 60 --mode $CRES --fb $CRES --panning $CRES --output $SECONDARY --rate 60 --mode $CRES --same-as $PRIMARY
 fi
 exit 0
 }
