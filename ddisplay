@@ -11,35 +11,25 @@ RESOLUTION="$(printf 'HERE')"    # Your native resolution for the primary displa
 MIRROR()
 {
 # Asking for the resolution
-MIRROR=$(printf "4K UHD\n1080p\n720p\n480p\nCustom Resolution\nNah I give up" | dmenu -b -l 5 -p "Choose the resolution.")
+MIRROR=$(printf "4K UHD\n1080p\n720p\n480p\nCustom Resolution\nExit" | dmenu -b -l 5 -p "Choose the resolution.")
 
-if [ "$MIRROR" = "4K UHD" ]; then
-xrandr --output $PRIMARY --rate 60 --mode 3840×2160 --fb 3840×2160 --panning 3840×2160 --output $SECONDARY --rate 60 --mode 3840×2160 --same-as $PRIMARY
-elif [ "$MIRROR" = "1080p" ]; then
-xrandr --output $PRIMARY --rate 60 --mode 1920x1080 --fb 1920x1080 --panning 1920x1080 --output $SECONDARY --rate 60 --mode 1920x1080 --same-as $PRIMARY
-elif [ "$MIRROR" = "720p" ]; then
-xrandr --output $PRIMARY --rate 60 --mode 1280x720 --fb 1280x720 --panning 1280x720 --output $SECONDARY --rate 60 --mode 1280x720 --same-as $PRIMARY
-elif [ "$MIRROR" = "480p" ]; then
-xrandr --output $PRIMARY --rate 60 --mode 640x480 --fb 640x480 --panning 640x480 --output $SECONDARY --rate 60 --mode 640x480 --same-as $PRIMARY
-elif [ "$MIRROR" = "Exit" ]; then
-exit 0
-elif [ "$MIRROR" = "Custom Resolution" ]; then
-CRES=$(printf "Enter a resolution. Example: 1920x1080" | dmenu -g 1 -b -l 1 -p 'Enter a resolution.')
-xrandr --output $PRIMARY --rate 60 --mode $CRES --fb $CRES --panning $CRES --output $SECONDARY --rate 60 --mode $CRES --same-as $PRIMARY
-fi
-exit 0
-}
+case "$MIRROR" in
+"4K UHD") xrandr --output $PRIMARY --rate 60 --mode 3840×2160 --fb 3840×2160 --panning 3840×2160 --output $SECONDARY --rate 60 --mode 3840×2160 --same-as $PRIMARY ;;
+"1080p") xrandr --output $PRIMARY --rate 60 --mode 1920x1080 --fb 1920x1080 --panning 1920x1080 --output $SECONDARY --rate 60 --mode 1920x1080 --same-as $PRIMARY ;;
+"720p") xrandr --output $PRIMARY --rate 60 --mode 1280x720 --fb 1280x720 --panning 1280x720 --output $SECONDARY --rate 60 --mode 1280x720 --same-as $PRIMARY ;;
+"480p") xrandr --output $PRIMARY --rate 60 --mode 640x480 --fb 640x480 --panning 640x480 --output $SECONDARY --rate 60 --mode 640x480 --same-as $PRIMARY ;;
+"Exit") exit 0 ;;
+"Custom Resolution") CRES=$(printf "Enter a resolution. Example: 1920x1080" | dmenu -g 1 -b -l 1 -p 'Enter a resolution.') && xrandr --output $PRIMARY --rate 60 --mode $CRES --fb $CRES --panning $CRES --output $SECONDARY --rate 60 --mode $CRES --same-as $PRIMARY ;;
+esac
 
 # Asking what you want to do
 ACTION=$(printf "Mirror\nExternal\nDisconnect\nExit" | dmenu -b -l 5 -p "What do you want to do with your cool monitor?")
 
-if [ "$ACTION" = "Mirror" ]; then
-MIRROR
-elif [ "$ACTION" = "External" ]; then
-xrandr --output $SECONDARY --auto --right-of $PRIMARY
-elif [ "$ACTION" = "Disconnect" ]; then
-xrandr --output $PRIMARY --rate 60 --mode $RESOLUTION --fb $RESOLUTION --panning $RESOLUTION --output $SECONDARY --off && xrandr --output $SECONDARY --off --right-of $PRIMARY
-elif [ "$ACTION" = "Exit" ]; then
-exit 0
-fi
+case "$ACTION" in
+"Mirror") MIRROR ;;
+"External") xrandr --output $SECONDARY --auto --right-of $PRIMARY ;;
+"Disconnect") xrandr --output $PRIMARY --rate 60 --mode $RESOLUTION --fb $RESOLUTION --panning $RESOLUTION --output $SECONDARY --off && xrandr --output $SECONDARY --off --right-of $PRIMARY ;;
+"Exit") exit 0 ;;
+esac
+
 exit 0
