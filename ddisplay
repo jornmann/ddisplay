@@ -7,6 +7,12 @@ SECONDARY="$(printf 'HERE')"     # Choose your connected display (again, xrandr 
 RESOLUTION="$(printf 'HERE')"    # Your native resolution for the primary display
 ###################################################################################################
 
+# Custom resolution
+CUSTOMRES() {
+CRES=$(printf "Enter a resolution. Example: 1920x1080" | dmenu -g 1 -b -l 1 -p 'Enter a resolution.')
+xrandr --output $PRIMARY --rate 60 --mode $CRES --fb 640x480 --panning $CRES --output $SECONDARY --rate 60 --mode $CRES --same-as $PRIMARY
+}
+
 # Mirror resolutions
 MIRROR()
 {
@@ -19,8 +25,9 @@ case "$MIRROR" in
 "720p") xrandr --output $PRIMARY --rate 60 --mode 1280x720 --fb 1280x720 --panning 1280x720 --output $SECONDARY --rate 60 --mode 1280x720 --same-as $PRIMARY ;;
 "480p") xrandr --output $PRIMARY --rate 60 --mode 640x480 --fb 640x480 --panning 640x480 --output $SECONDARY --rate 60 --mode 640x480 --same-as $PRIMARY ;;
 "Exit") exit 0 ;;
-"Custom Resolution") CRES=$(printf "Enter a resolution. Example: 1920x1080" | dmenu -g 1 -b -l 1 -p 'Enter a resolution.') && xrandr --output $PRIMARY --rate 60 --mode $CRES --fb $CRES --panning $CRES --output $SECONDARY --rate 60 --mode $CRES --same-as $PRIMARY ;;
+"Custom Resolution") CUSTOMRES
 esac
+}
 
 # Asking what you want to do
 ACTION=$(printf "Mirror\nExternal\nDisconnect\nExit" | dmenu -b -l 5 -p "What do you want to do with your cool monitor?")
