@@ -31,3 +31,8 @@ Like that:
 
 ## Do you have an idea or want to contribute?
 Feel free to join. Everyone can `git clone` edit and then `git add --all && git commit -m "My commit" && git push`. So enjoy ;)
+
+## Thanks to:
+- Me (for creating this project)
+- speedie (for his awesome custom resolution option)
+- Others (for appreciating this project)
