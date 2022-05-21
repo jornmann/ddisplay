@@ -3,14 +3,15 @@
 
 ############################### SETTINGS (EDIT THEM) ##############################################
 PRIMARY="$(printf 'HERE')"       # Choose your correct primary display (use xrandr for more info)
-SECONDARY="$(printf 'HERE')"     # Choose your connected display (again, xrandr for more info)
-RESOLUTION="$(printf 'HERE')"    # Your native resolution for the primary display
+SECONDARY="$(printf 'HERE')"     # Choose your connected display (again, xrandr for more info))
+RESOLUTION="$(printf 'HERE')"    # Your native resolution for the primary display (ie. 1920x1080)
+REFRESH="$(printf 'HERE')"       # Your native refresh rate for the primary display (ie. 60)
 ###################################################################################################
 
 # Custom resolution
 CUSTOMRES() {
-CRES=$(printf "Enter a resolution. Example: 1920x1080" | dmenu -g 1 -b -l 1 -p 'Enter a resolution.')
-CREF=$(printf "Enter a refresh rate. Example: 60" | dmenu -g 1 -b -l 1 -p 'Enter a refresh rate.')
+CRES=$(printf '             ' | dmenu -b -l 0 -p 'Enter a resolution (ie. 1920x1080): ')
+CREF=$(printf '      ' | dmenu -b -l 0 -p 'Enter a refresh rate (ie. 60): ')
 xrandr --output $PRIMARY --rate $CREF --mode $CRES --fb $CRES --panning $CRES --output $SECONDARY --rate $CREF --mode $CRES --same-as $PRIMARY
 }
 
@@ -18,16 +19,15 @@ xrandr --output $PRIMARY --rate $CREF --mode $CRES --fb $CRES --panning $CRES --
 MIRROR()
 {
 # Asking for the resolution
-MIRROR=$(printf "4K UHD\n1080p\n720p\n480p\nCustom Resolution\nExit" | dmenu -b -l 5 -p "Choose the resolution.")
-CREF=$(printf "Enter a refresh rate. Example: 60" | dmenu -g 1 -b -l 1 -p 'Enter a refresh rate.')
+MIRROR=$(printf "4K UHD\n1080p\n720p\n480p\nCustom Resolution\nExit" | dmenu -b -l 6 -p "Choose the resolution.")
 
 case "$MIRROR" in
-"4K UHD") xrandr --output $PRIMARY --rate $CREF --mode 3840×2160 --fb 3840×2160 --panning 3840×2160 --output $SECONDARY --rate $CREF --mode 3840×2160 --same-as $PRIMARY ;;
-"1080p") xrandr --output $PRIMARY --rate $CREF --mode 1920x1080 --fb 1920x1080 --panning 1920x1080 --output $SECONDARY --rate $CREF --mode 1920x1080 --same-as $PRIMARY ;;
-"720p") xrandr --output $PRIMARY --rate $CREF --mode 1280x720 --fb 1280x720 --panning 1280x720 --output $SECONDARY --rate $CREF --mode 1280x720 --same-as $PRIMARY ;;
-"480p") xrandr --output $PRIMARY --rate $CREF --mode 640x480 --fb 640x480 --panning 640x480 --output $SECONDARY --rate $CREF --mode 640x480 --same-as $PRIMARY ;;
+"4K UHD") xrandr --output $PRIMARY --rate 60 --mode 3840×2160 --fb 3840×2160 --panning 3840×2160 --output $SECONDARY --rate 60 --mode 3840×2160 --same-as $PRIMARY ;;
+"1080p") xrandr --output $PRIMARY --rate 60 --mode 1920x1080 --fb 1920x1080 --panning 1920x1080 --output $SECONDARY --rate 60 --mode 1920x1080 --same-as $PRIMARY ;;
+"720p") xrandr --output $PRIMARY --rate 60 --mode 1280x720 --fb 1280x720 --panning 1280x720 --output $SECONDARY --rate 60 --mode 1280x720 --same-as $PRIMARY ;;
+"480p") xrandr --output $PRIMARY --rate 60 --mode 640x480 --fb 640x480 --panning 640x480 --output $SECONDARY --rate 60 --mode 640x480 --same-as $PRIMARY ;;
+"Custom Resolution") CUSTOMRES ;;
 "Exit") exit 0 ;;
-"Custom Resolution") CUSTOMRES
 esac
 }
 
@@ -37,7 +37,7 @@ ACTION=$(printf "Mirror\nExternal\nDisconnect\nExit" | dmenu -b -l 5 -p "What do
 case "$ACTION" in
 "Mirror") MIRROR ;;
 "External") xrandr --output $SECONDARY --auto --right-of $PRIMARY ;;
-"Disconnect") xrandr --output $PRIMARY --rate $REF --mode $RESOLUTION --fb $RESOLUTION --panning $RESOLUTION --output $SECONDARY --off && xrandr --output $SECONDARY --off --right-of $PRIMARY ;;
+"Disconnect") xrandr --output $PRIMARY --rate $REFRESH --mode $RESOLUTION --fb $RESOLUTION --panning $RESOLUTION --output $SECONDARY --off && xrandr --output $SECONDARY --off --right-of $PRIMARY ;;
 "Exit") exit 0 ;;
 esac
 
