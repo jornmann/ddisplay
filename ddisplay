@@ -2,10 +2,10 @@
 # ddisplay - connectivity to your monitor it's now easier ;)
 
 ############################### SETTINGS (EDIT THEM) ##############################################
-PRIMARY="$(printf 'HERE')"       # Choose your correct primary display (use xrandr for more info)
-SECONDARY="$(printf 'HERE')"     # Choose your connected display (again, xrandr for more info))
-RESOLUTION="$(printf 'HERE')"    # Your native resolution for the primary display (ie. 1920x1080)
-REFRESH="$(printf 'HERE')"       # Your native refresh rate for the primary display (ie. 60)
+PRIMARY="HERE"       # Choose your correct primary display (use xrandr for more info)
+SECONDARY="HERE"     # Choose your connected display (again, xrandr for more info))
+RESOLUTION="HERE"    # Your native resolution for the primary display (ie. 1920x1080)
+REFRESH="HERE"       # Your native refresh rate for the primary display (ie. 60)
 ###################################################################################################
 
 # Custom resolution
